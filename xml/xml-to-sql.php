@@ -18,7 +18,7 @@ mysqli_select_db($SQL, SQL_DATABASE);
 // Create Table(s)
 foreach(SQL_TABLES as $T)
 {
-    $COLUMNS = sql_columns(list_fields($T));
+    $COLUMNS = sql_columns(list_fields($T), $T);
     $Q = "CREATE TABLE IF NOT EXISTS `{$T}` ({$COLUMNS})";
     $R = mysqli_query($SQL, $Q);
     if(!$R) die("Mysql creating table `{$T}` failed.\n{$Q}\n");

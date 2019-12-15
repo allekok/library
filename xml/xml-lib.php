@@ -119,9 +119,13 @@ function list_fields ($LANG="en")
     return $RES;
 }
 
-function sql_columns ($FIELDS)
+function sql_columns ($FIELDS, $LANG='en')
 {
-    $S = "`id` INT(16) UNSIGNED AUTO_INCREMENT PRIMARY KEY";
+    if($LANG == 'en')
+	$S = "`id`";
+    elseif($LANG == 'fa')
+	$S = "`ردیف`";
+    $S .= " INT(16) UNSIGNED AUTO_INCREMENT PRIMARY KEY";
     foreach($FIELDS as $F)
     {
 	$S .= ",`$F` TEXT";
