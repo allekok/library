@@ -1,0 +1,60 @@
+@font-face
+{
+    font-family:'Naskh';
+    src: url("DroidNaskh-Regular.woff2");
+}
+body
+{
+    max-width:1000px;
+    margin:0 auto;
+    padding:1em;
+    font-family:'Naskh';
+}
+input[type=text]
+{
+    font-family:'Naskh';
+    font-size:inherit;
+    outline:0;
+    border:1px solid;
+    border-radius:5px;
+    width:100%;
+    padding:1em;
+    box-sizing:border-box;
+    margin:.5em 0;
+    display:block;
+}
+input[type=text]:focus
+{
+    border-color:#00e;
+}
+button
+{
+    font-family:'Naskh';
+    font-size:inherit;
+    background:#000;
+    color:#fff;
+    border:0;
+    outline:0;
+    border-radius:1em;
+}
+button:hover
+{
+    background:#00e;
+}
+button[type=submit]
+{
+    display:block;
+    margin:2em auto;
+    padding:.5em 1em;
+}
+header h1
+{
+    text-align:center;
+}
+@media only screen and (max-width:600px)
+{
+    body
+    {
+	font-size:14px;
+    }
+}
