@@ -6,8 +6,8 @@
 }
 body
 {
-    background:#fff;
-    color:#000;
+    background:#222;
+    color:#fff;
     max-width:1000px;
     margin:0 auto;
     padding:1em;
@@ -28,12 +28,12 @@ input[type=text]
     margin:.5em 0;
     display:block;
     box-shadow:none;
-    background:#fff;
-    color:#000;
+    background:#222;
+    color:#fff;
 }
 input[type=text]:focus
 {
-    border-color:#00e;
+    border-color:#cf0;
     outline:0;
 }
 button
@@ -42,8 +42,8 @@ button
     appearance:none;
     font-family:'Naskh';
     font-size:inherit;
-    background:#000;
-    color:#fff;
+    background:#fff;
+    color:#222;
     border:0;
     outline:0;
     box-shadow:none;
@@ -51,7 +51,7 @@ button
 }
 button:hover
 {
-    background:#00e;
+    background:#cf0;
 }
 button[type=submit]
 {
@@ -72,32 +72,32 @@ header h1
 }
 ::placeholder
 {
-    color:#666;
+    color:#999;
 }
 .more-btn
 {
     display:block;
     background:none;
-    color:#000;
+    color:#fff;
 }
 .more-btn:hover
 {
     background:none;
-    color:#00e;
+    color:#cf0;
 }
 @keyframes loading
 {
     0%
     {
-	background:#fff;
+	background:#222;
     }
     50%
     {
-	background:#000;
+	background:#fff;
     }
     100%
     {
-	background:#fff;
+	background:#222;
     }
 }
 .loading
@@ -114,5 +114,5 @@ li
 }
 li:nth-child(even)
 {
-    background:#eee;
+    background:#111;
 }
