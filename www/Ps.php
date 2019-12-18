@@ -32,7 +32,7 @@ $Ps = [
     "not found" => [
 	"ckb" => "بەداخەوە گەڕان هیچ ئاکامی نەبوو.",
 	"fa" => "متاسفانه نتیجه‌ای یافت نشد.",
-	"en" => "Sorry, no results.",
+	"en" => "Sorry, no results found.",
     ],
 ];
 ?>
