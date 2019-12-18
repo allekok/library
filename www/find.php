@@ -11,6 +11,16 @@ $_assoc = [
     'ckb' => ['٠', '١', '٢', '٣', '٤','٥', '٦', '٧', '٨', '٩'],
 ];
 
+// From php.net's manual
+if (!function_exists('array_key_first')) {
+    function array_key_first(array $arr) {
+        foreach($arr as $key => $unused) {
+            return $key;
+        }
+        return NULL;
+    }
+}
+
 header("Content-type:text/plain; Charset=UTF-8");
 require("constants.php");
 $tbl = @$_REQUEST['table'];
