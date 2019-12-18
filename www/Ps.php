@@ -34,5 +34,10 @@ $Ps = [
 	"fa" => "متاسفانه نتیجه‌ای یافت نشد.",
 	"en" => "Sorry, no results found.",
     ],
+    "empty error" => [
+	"ckb" => "تکایە تەنانەت یەکێک لە فیلدەکانی سەرەوە پڕ کەنەوە.",
+	"fa" => "لطفا حداقل یکی از فیلدهای بالا را پر کنید.",
+	"en" => "Please, fill at least one of the above fields.",
+    ],
 ];
 ?>

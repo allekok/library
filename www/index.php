@@ -41,7 +41,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
     <body>
 	<header>
 	    <h1>
-		<?php p("site title"); ?>
+		<?php P("site title"); ?>
 	    </h1>
 	</header>
 	<?php
@@ -77,6 +77,9 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	<div id="response"></div>
 	
 	<script>
+	 const site_lang = "<?php echo $site_lang; ?>";
+	 const site_dir = site_lang == "en" ? "ltr" : "rtl";
+	 const site_align = site_lang == "en" ? "left" : "right";
 	 const lang = "<?php echo $tbl; ?>";
 	 const dir = lang == "en" ? "ltr" : "rtl";
 	 const align = lang == "en" ? "left" : "right";
@@ -101,11 +104,22 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	     const main_fields = {fa : ["ردیف","عنوان‏","پديدآور"],
 				  en : ["id","Title‎","Author‎"]};
 	     let request = "";
+	     let empty = true;
 	     form.querySelectorAll("input").forEach(function (o) {
 		 const k = encodeURIComponent(o.name);
-		 const v = encodeURIComponent(o.value);
-		 request += `${k}=${v}&`;
+		 const v = encodeURIComponent(o.value.trim());
+		 if(v != "")
+		 {
+		     request += `${k}=${v}&`;
+		     if(k != "table")
+			 empty = false;
+		 }
 	     });
+	     if(empty)
+	     {
+		 target.innerHTML = `<p style='direction:${site_dir};text-align:${site_align}'><?php P("empty error"); ?></p>`;
+		 return;
+	     }
 	     loadingDiv.style.display = "block";
 	     postUrl("find.php", request, function (response) {
 		 try
