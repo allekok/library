@@ -20,9 +20,9 @@ $Ps = [
 	"en" => "Search",
     ],
     "more" => [
-	"ckb" => "زیاتر...",
-	"fa" => "بیشتر...",
-	"en" => "more...",
+	"ckb" => "زیاتر",
+	"fa" => "بیشتر",
+	"en" => "more",
     ],
     "less" => [
 	"ckb" => "کەمتر",
@@ -37,7 +37,17 @@ $Ps = [
     "empty error" => [
 	"ckb" => "تکایە تەنانەت یەکێک لە فیلدەکانی سەرەوە پڕ کەنەوە.",
 	"fa" => "لطفا حداقل یکی از فیلدهای بالا را پر کنید.",
-	"en" => "Please, fill at least one of the above fields.",
+	"en" => "Please, fill in one of the above fields at least.",
+    ],
+    "site lang" => [
+	"ckb" => "کوردی",
+	"fa" => "فارسی",
+	"en" => "English",
+    ],
+    "language" => [
+	"ckb" => "زمان",
+	"fa" => "زبان",
+	"en" => "Language",
     ],
 ];
 ?>

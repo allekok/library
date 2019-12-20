@@ -2,10 +2,12 @@
 require_once("constants.php");
 require_once("Ps.php");
 
-$dark = isset($_GET["dark"]);
+$dark = isset($_GET["dark"]) || (@$_COOKIE["theme"] == "dark");
 
 $tbl = @strtolower($_GET['table']);
+if(!$tbl) $tbl = @$_COOKIE["table"];
 $site_lang = @strtolower($_GET['lang']);
+if(!$site_lang) $site_lang = @$_COOKIE["lang"];
 if(!in_array($site_lang, AVAILABLE_LANGS))
     $site_lang = SITE_LANG_DEF;
 $html_dir = ($site_lang == 'en') ? 'ltr' : 'rtl';
@@ -43,6 +45,31 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	    <h1>
 		<?php P("site title"); ?>
 	    </h1>
+	    <a href="<?php echo $dark ? "?" : "?dark"; ?>"
+	       class="icon" id="dark-icon"
+	    ><?php echo $dark ? "brightness_5" :
+			"brightness_2"; ?></a>
+	    <div class="dropdown" id="dd-lang">
+		<div class="dd-label" id="dd-lang-label"
+		><?php P("site lang"); ?>
+		    <span class='icon'
+		    >keyboard_arrow_down</span></div>
+		<div class="dd-frame">
+		    <ul>
+			<?php
+			foreach(AVAILABLE_LANGS as $i => $L)
+			{
+			    echo "<li>";
+			    if($site_lang != $L)
+				echo "<a href='?lang={$L}' onclick='set_lang(\"{$L}\")'>" .
+				     LANGS_LIT[$i] . "</a></li>";
+			    else
+				echo LANGS_LIT[$i] . "</li>";
+			}
+			?>
+		    </ul>
+		</div>
+	    </div>
 	</header>
 	<?php
 	/* List fields */
@@ -66,7 +93,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	}
 	echo "<div id='form-main'>{$main_html}</div>";
 	echo "<div id='form-not-main' style='display:none'>{$not_main_html}</div>";
-	echo "<button type='button' class='more-btn' id='more-btn'>" . SP("more") . "</button>";
+	echo "<button type='button' class='more-btn' id='more-btn'>" . SP("more") . "...</button>";
 	echo "<input type='hidden' name='table' value='{$tbl}' />";
 	echo "<button type='submit'>" . SP("send") . "</button>";
 	echo "</form>";
@@ -149,7 +176,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 			 html_m += "</div>";
 			 html_n_m += "</div>";
 			 html += html_m + html_n_m + "<button type='button' \
-onclick='more(this)' class='more-btn'><?php P("more"); ?></button></li>";
+onclick='more(this)' class='more-btn'><?php P("more"); ?>...</button></li>";
 		     }
 		     if(response.length == 0)
 		     {
@@ -173,12 +200,12 @@ onclick='more(this)' class='more-btn'><?php P("more"); ?></button></li>";
 	     if(form_not_main.style.display != "none")
 	     {
 		 form_not_main.style.display = "none";
-		 more_btn.innerText = "<?php P("more") ?>";
+		 more_btn.innerText = "<?php P("more") ?>...";
 	     }
 	     else
 	     {
 		 form_not_main.style.display = "block";
-		 more_btn.innerText = "<?php P("less") ?>";
+		 more_btn.innerHTML = "<i class='icon'>keyboard_arrow_up</i> <?php P("less") ?>";
 	     }
 	 });
 
@@ -189,12 +216,12 @@ onclick='more(this)' class='more-btn'><?php P("more"); ?></button></li>";
 	     if(li_n_m.style.display == "none")
 	     {
 		 li_n_m.style.display = "block";
-		 btn.innerText = "<?php P("less"); ?>";
+		 btn.innerHTML = "<?php P("less"); ?> <i class='icon'>keyboard_arrow_up</i>";
 	     }
 	     else
 	     {
 		 li_n_m.style.display = "none";
-		 btn.innerText = "<?php P("more"); ?>";
+		 btn.innerText = "<?php P("more"); ?>...";
 	     }
 	 }
 	 
@@ -202,6 +229,58 @@ onclick='more(this)' class='more-btn'><?php P("more"); ?></button></li>";
 	     e.preventDefault();
 	     search();
 	 });
+
+	 function set_cookie (cookie_name, value, days=1000, path="")
+	 {
+	     let expires = new Date();
+	     expires.setTime(expires.getTime() + (days*24*3600*1000));
+	     expires = expires.toUTCString();
+	     const cookie = `${cookie_name}=${value};expires=${expires};path=${path}`;
+	     document.cookie = cookie;
+	     return cookie;
+	 }
+
+	 const dark_icon = document.getElementById("dark-icon");
+	 dark_icon.addEventListener("click", function (e) {
+	     e.preventDefault();
+	     
+	     if(dark_icon.innerText == "brightness_2")
+	     {
+		 /* Light */
+		 set_cookie("theme", "dark");
+		 window.location.reload();
+	     }
+	     else
+	     {
+		 /* Dark */
+		 set_cookie("theme", "light");
+		 window.location.reload();
+	     }
+	     dark_icon.innerText = "sync";
+	 });
+
+	 const dd_lang = document.getElementById("dd-lang");
+	 const dd_lang_label = dd_lang.querySelector(".dd-label");
+	 const dd_lang_frame = dd_lang.querySelector(".dd-frame");
+	 dd_lang_label.addEventListener("click", function () {
+	     const dd_lang_label_icon = dd_lang_label.querySelector(".icon");
+	     if(dd_lang_frame.style.display != "block")
+	     {
+		 dd_lang_frame.style.display = "block";
+		 dd_lang_label_icon.innerText = "keyboard_arrow_up";
+	     }
+	     else
+	     {
+		 dd_lang_frame.style.display = "none";
+		 dd_lang_label_icon.innerText = "keyboard_arrow_down";
+	     }
+	 });
+
+	 function set_lang (lang)
+	 {
+	     set_cookie("lang", lang);
+	     window.location.reload();
+	 }
 	</script>
     </body>
 </html>

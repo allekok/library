@@ -2,7 +2,13 @@
 {
     font-family:'Naskh';
     font-display:swap;
-    src: url("DroidNaskh-Regular.woff2");
+    src: url("DroidNaskh-Regular.woff2") format("woff2");
+}
+@font-face
+{
+    font-family:'Icon';
+    font-display:swap;
+    src: url("Material-Icons.woff2") format("woff2");
 }
 body
 {
@@ -108,11 +114,74 @@ header h1
     margin:auto;
     border-radius:50%;
 }
-li
+#response li
 {
     padding:1em;
 }
-li:nth-child(even)
+#response li:nth-child(even)
 {
     background:#111;
+}
+.icon
+{
+    font-family:'Icon';
+    font-style:normal;
+    vertical-align:middle;
+}
+a
+{
+    text-decoration:none;
+    color:#fff;
+}
+a:hover
+{
+    color:#cf0;
+}
+#dark-icon
+{
+    font-size:2em;
+    position:absolute;
+    left:0;
+    top:.3em;
+}
+header
+{
+    position:relative;
+}
+.dropdown
+{
+    position:relative;
+}
+.dd-label
+{
+    cursor:pointer;
+    display:inline-block;
+}
+.dd-label:hover
+{
+    color:#cf0;
+}
+.dd-frame
+{
+    background:#222;
+    color:#999;
+    display:none;
+    border:1px solid;
+    border-radius:1em;
+}
+.dd-frame ul
+{
+    margin:0;
+    padding:0;
+}
+.dd-frame ul li
+{
+    display:block;
+    padding:.5em 1em;
+}
+#dd-lang
+{
+    position:absolute;
+    right:0;
+    top:.3em;
 }
