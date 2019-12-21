@@ -61,7 +61,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 			{
 			    echo "<li>";
 			    if($site_lang != $L)
-				echo "<a href='?lang={$L}' onclick='set_lang(\"{$L}\")'>" .
+				echo "<a href='?lang={$L}' onclick='set_lang(\"{$L}\", event)'>" .
 				     LANGS_LIT[$i] . "</a></li>";
 			    else
 				echo LANGS_LIT[$i] . "</li>";
@@ -162,25 +162,25 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 		     let html = "<ul>";
 		     for(const i in response)
 		     {
-			 html += "<li>";
+			 html += `<li><div class='resp-num' style='${align=="right" ? "left" : "right"}:-1em'>${num_convert(String(parseInt(i)+1), "en", site_lang)}</div>`;
 			 let html_m = "<div class='li-main'>";
 			 let html_n_m = "<div class='li-not-main' style='display:none'>";
 			 for(const j in response[i])
 			 {
 			     if(! response[i][j]) continue;
+			     response[i][j] = response[i][j].replace(/\n/g,"<br>");
 			     if(main_fields[lang].indexOf(j) !== -1)
-				 html_m += `${j}:<br><i style='padding-${align}:1.5em'>${response[i][j]}</i><br>`;
+				 html_m += `${j}:<p style='padding-${align}:1em;margin-${align}:.5em;border-${align}:1px solid'>${response[i][j]}</p>`;
 			     else
-				 html_n_m += `${j}:<br><i style='padding-${align}:1.5em'>${response[i][j]}</i><br>`;
+				 html_n_m += `${j}:<p style='padding-${align}:1.5em;margin-${align}:.5em;border-${align}:1px solid'>${response[i][j]}</p>`;
 			 }
 			 html_m += "</div>";
 			 html_n_m += "</div>";
-			 html += html_m + html_n_m + "<button type='button' \
-onclick='more(this)' class='more-btn'><?php P("more"); ?>...</button></li>";
+			 html += html_m + html_n_m + `<button type='button' onclick='more(this)' class='more-btn' style='direction:${site_dir};text-align:${site_align == "right" ? "left" : "right"}'><?php P("more"); ?>...</button></li>`;
 		     }
 		     if(response.length == 0)
 		     {
-			 html += "<p><?php P("not found"); ?></p>";
+			 html += `<p style='direction:${site_dir};text-align:${site_align}'><?php P("not found"); ?></p>`;
 		     }
 		     html += "</ul>";
 		     target.innerHTML = html;
@@ -188,7 +188,7 @@ onclick='more(this)' class='more-btn'><?php P("more"); ?>...</button></li>";
 		 }
 		 else
 		 {
-		     target.innerHTML = "<p><?php P("not found"); ?></p>";
+		     target.innerHTML = `<p style='direction:${site_dir};text-align:${site_align}'><?php P("not found"); ?></p>`;
 		     loadingDiv.style.display = "none";
 		 }
 	     });
@@ -211,12 +211,12 @@ onclick='more(this)' class='more-btn'><?php P("more"); ?>...</button></li>";
 
 	 function more (btn)
 	 {
-	     const li_n_m = btn.parentNode.
+	     const li_n_m = btn.parentNode.parentNode.
 				querySelector(".li-not-main");
 	     if(li_n_m.style.display == "none")
 	     {
 		 li_n_m.style.display = "block";
-		 btn.innerHTML = "<?php P("less"); ?> <i class='icon'>keyboard_arrow_up</i>";
+		 btn.innerHTML = "<i class='icon'>keyboard_arrow_up</i> <?php P("less"); ?>";
 	     }
 	     else
 	     {
@@ -276,10 +276,25 @@ onclick='more(this)' class='more-btn'><?php P("more"); ?>...</button></li>";
 	     }
 	 });
 
-	 function set_lang (lang)
+	 function set_lang (lang, e)
 	 {
+	     e.preventDefault();
 	     set_cookie("lang", lang);
 	     window.location.reload();
+	 }
+
+	 function num_convert (inp="", f, t)
+	 {
+	     if(f == t) return inp;
+	     
+	     const nums = { en : ["0","1","2","3","4","5","6","7","8","9"],
+			    fa : ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"],
+			    ckb : ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'] };
+	     
+	     for (const i in nums[f])
+		 inp = inp.replace(new RegExp(nums[f][i],"g"), nums[t][i]);
+	     
+	     return inp;
 	 }
 	</script>
     </body>
