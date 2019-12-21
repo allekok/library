@@ -211,7 +211,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 
 	 function more (btn)
 	 {
-	     const li_n_m = btn.parentNode.parentNode.
+	     const li_n_m = btn.parentNode.
 				querySelector(".li-not-main");
 	     if(li_n_m.style.display == "none")
 	     {
