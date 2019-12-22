@@ -50,7 +50,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	    ><?php echo $dark ? "brightness_5" :
 			"brightness_2"; ?></a>
 	    <div class="dropdown" id="dd-lang">
-		<div class="dd-label" id="dd-lang-label"
+		<div class="dd-label"
 		><?php P("site lang"); ?>
 		    <span class='icon'
 		    >keyboard_arrow_down</span></div>
@@ -83,6 +83,33 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	$main_html = "";
 	$not_main_html = "";
 	echo "<form action='find.php' method='post' id='the-form'>";
+	?>
+	<?php P("search in") ?>: 
+	<div class="dropdown" id="dd-table">
+	    <div class="dd-label"
+	    ><?php
+	     if(($_ = array_search($tbl, SQL_TABLES)) !== false)
+		 P(TABLES_LIT[$_]);
+	     ?>
+		<span class='icon'
+		>keyboard_arrow_down</span></div>
+	    <div class="dd-frame">
+		<ul>
+		    <?php
+		    foreach(SQL_TABLES as $i => $L)
+		    {
+			echo "<li>";
+			if($tbl != $L)
+			    echo "<a href='?table={$L}' onclick='set_table(\"{$L}\", event)'>" .
+				 SP(TABLES_LIT[$i]) . "</a></li>";
+			else
+			    echo SP(TABLES_LIT[$i]) . "</li>";
+		    }
+		    ?>
+		</ul>
+	    </div>
+	</div>
+	<?php
 	while($c = mysqli_fetch_assoc($result))
 	{
 	    $field_name = str_replace(["."," "], "_", $c["Field"]);
@@ -280,6 +307,30 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	 {
 	     e.preventDefault();
 	     set_cookie("lang", lang);
+	     window.location.reload();
+	 }
+
+	 const dd_table = document.getElementById("dd-table");
+	 const dd_table_label = dd_table.querySelector(".dd-label");
+	 const dd_table_frame = dd_table.querySelector(".dd-frame");
+	 dd_table_label.addEventListener("click", function () {
+	     const dd_table_label_icon = dd_table_label.querySelector(".icon");
+	     if(dd_table_frame.style.display != "block")
+	     {
+		 dd_table_frame.style.display = "block";
+		 dd_table_label_icon.innerText = "keyboard_arrow_up";
+	     }
+	     else
+	     {
+		 dd_table_frame.style.display = "none";
+		 dd_table_label_icon.innerText = "keyboard_arrow_down";
+	     }
+	 });
+
+	 function set_table (table, e)
+	 {
+	     e.preventDefault();
+	     set_cookie("table", table);
 	     window.location.reload();
 	 }
 

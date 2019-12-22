@@ -178,6 +178,8 @@ header
     display:none;
     border:1px solid;
     border-radius:1em;
+    z-index:999;
+    position:absolute;
 }
 .dd-frame ul
 {
@@ -187,13 +189,18 @@ header
 .dd-frame ul li
 {
     display:block;
-    padding:.5em 1em;
+    padding:.5em;
+    font-size:.9em;
 }
 #dd-lang
 {
     position:absolute;
     right:0;
     top:.3em;
+}
+#dd-lang .dd-frame
+{
+    min-width:90px;
 }
 #response p
 {
@@ -208,4 +215,12 @@ header
     background:#222;
     border:1px solid;
     font-size:1.1em;
+}
+#dd-table
+{
+    display:inline-block;
+}
+#dd-table .dd-frame
+{
+    min-width:150px;
 }

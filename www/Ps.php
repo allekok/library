@@ -44,5 +44,20 @@ $Ps = [
 	"fa" => "فارسی",
 	"en" => "English",
     ],
+    "persian books" => [
+	"ckb" => "کتێبە فارسییەکان",
+	"fa" => "کتاب‌های فارسی",
+	"en" => "Persian books",
+    ],
+    "english books" => [
+	"ckb" => "کتێبە ئینگلیسیەکان",
+	"fa" => "کتاب‌های انگلیسی",
+	"en" => "English books",
+    ],
+    "search in" => [
+	"ckb" => "گەڕان لە",
+	"fa" => "جست‌وجو در",
+	"en" => "Search in",
+    ],
 ];
 ?>
