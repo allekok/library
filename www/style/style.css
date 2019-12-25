@@ -224,3 +224,11 @@ header
 {
     min-width:150px;
 }
+.row
+{
+    margin-top:1.5em;
+}
+.row label
+{
+    display:block;
+}

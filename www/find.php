@@ -1,28 +1,9 @@
 <?php
-$ar_signs =["ِ", "ُ", "ٓ", "ٰ", "ْ", "ٌ", "ٍ", "ً", "ّ", "َ"];
-$extras = ["?", "!", "#", "&","*", "(", ")", "-","+",
-	   "=", "_","[", "]", "{","}","<",">","\\","/",
-	   "|", "'","\"", ";", ":", ",",".", "~", "`",
-	   "؟", "،", "»", "«","ـ","؛","›","‹","•","‌",
-	   "\u{200E}","\u{200F}"];
-$_assoc = [
-    'en' => ['0','1','2','3','4','5','6','7','8','9'],	
-    'fa' => ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'],
-    'ckb' => ['٠', '١', '٢', '٣', '٤','٥', '٦', '٧', '٨', '٩'],
-];
-
-// From php.net's manual
-if (!function_exists('array_key_first')) {
-    function array_key_first(array $arr) {
-        foreach($arr as $key => $unused) {
-            return $key;
-        }
-        return NULL;
-    }
-}
+require_once("constants.php");
+require_once("lib.php");
 
 header("Content-type:text/plain; Charset=UTF-8");
-require("constants.php");
+
 $tbl = @$_REQUEST['table'];
 if(!in_array($tbl, SQL_TABLES))
     $tbl = SQL_TABLE_DEF;
@@ -56,8 +37,12 @@ $query = "SELECT * FROM `{$tbl}`";
 $result = mysqli_query($sql, $query);
 if(! $result) die();
 
-$limit = @filter_var($_REQUEST["limit"], FILTER_VALIDATE_INT) ?
-	 $_REQUEST["limit"] : 10;
+$limit = @num_convert($_REQUEST["limit"], "ckb", "en");
+$limit = num_convert($limit, "fa", "en");
+$limit = intval($limit);
+if(! $limit)
+    $limit = 10;
+
 $R = [];
 while($r = mysqli_fetch_assoc($result))
 {    
@@ -65,7 +50,7 @@ while($r = mysqli_fetch_assoc($result))
     {
 	if(false !== @strpos(san_text($d), $queries[$k]))
 	{
-	    if(! $limit-- ) break 2;
+	    if($limit-- == 0) break 2;
 	    if($tbl == "fa")
 	    {
 		$rk = array_key_first($r);
@@ -79,27 +64,4 @@ while($r = mysqli_fetch_assoc($result))
 echo json_encode($R);
 
 mysqli_close($sql);
-
-function san_text ($s)
-{
-    global $ar_signs, $extras;
-    $s = str_replace($extras, "", $s);
-    $s = str_replace($ar_signs, "", $s);
-    $s = str_replace(["ي","ك"], ["ی","ک"], $s);
-    $s = strtolower($s);
-    $s = num_convert($s, "fa", "en");
-    $s = num_convert($s, "ckb", "en");
-    $s = preg_replace("/\s+/u", "", $s);
-    return $s;
-}
-
-function num_convert($_string, $_from, $_to)
-{
-    /* Convert a string of numbers from 
-       (en,fa,ckb) > (en,fa,ckb) */
-    global $_assoc;
-    return str_replace($_assoc[$_from],
-		       $_assoc[$_to],
-		       $_string);
-}
 ?>

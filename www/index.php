@@ -1,8 +1,11 @@
 <?php
 require_once("constants.php");
 require_once("Ps.php");
+require_once("lib.php");
 
 $dark = isset($_GET["dark"]) || (@$_COOKIE["theme"] == "dark");
+
+$LIMIT = @$_COOKIE["limit"] ? @$_COOKIE["limit"] : 10;
 
 $tbl = @strtolower($_GET['table']);
 if(!$tbl) $tbl = @$_COOKIE["table"];
@@ -28,11 +31,6 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 					   ?>" />
 	<meta name='viewport' content='width=device-width, initial-scale=1' />
 	<style>
-	 input[type=text]
-	 {
-	     direction:<?php echo ($tbl == 'en') ?
-				  "ltr" : "rtl"; ?>;
-	 }
 	 #response
 	 {
 	     direction:<?php echo ($tbl == 'en') ?
@@ -114,14 +112,20 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	{
 	    $field_name = str_replace(["."," "], "_", $c["Field"]);
 	    if(in_array($c["Field"], DEF_COLS[$tbl]))
-		$main_html .= "<div class='row'><input type='text' name='{$field_name}' placeholder='{$c["Field"]}'></div>";
+		$main_html .= "<input type='text' name='{$field_name}' placeholder='" .
+			      SP($field_name) . "'>";
 	    else
-		$not_main_html .= "<div class='row'><input type='text' name='{$field_name}' placeholder='{$c["Field"]}'></div>";
+		$not_main_html .= "<input type='text' name='{$field_name}' placeholder='".
+				  SP($field_name)."'>";
 	}
 	echo "<div id='form-main'>{$main_html}</div>";
 	echo "<div id='form-not-main' style='display:none'>{$not_main_html}</div>";
 	echo "<button type='button' class='more-btn' id='more-btn'>" . SP("more") . "...</button>";
 	echo "<input type='hidden' name='table' value='{$tbl}' />";
+	echo "<div class='row'><label for='limitTxt'>".
+	     SP("number of results").": </label>
+<input type='text' name='limit' id='limitTxt' value='" .
+	     num_convert($LIMIT, "en", $site_lang) . "'></div>";
 	echo "<button type='submit'>" . SP("send") . "</button>";
 	echo "</form>";
 
@@ -165,7 +169,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 		 if(v != "")
 		 {
 		     request += `${k}=${v}&`;
-		     if(k != "table")
+		     if(k != "table" || k != "limit")
 			 empty = false;
 		 }
 	     });
@@ -255,6 +259,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	 document.getElementById("the-form").addEventListener("submit", function(e) {
 	     e.preventDefault();
 	     search();
+	     set_limit("limitTxt");
 	 });
 
 	 function set_cookie (cookie_name, value, days=1000, path="")
@@ -346,6 +351,15 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 		 inp = inp.replace(new RegExp(nums[f][i],"g"), nums[t][i]);
 	     
 	     return inp;
+	 }
+
+	 function set_limit (el_id)
+	 {
+	     let val = document.getElementById(el_id).value;
+	     val = num_convert(val, "ckb", "en");
+	     val = num_convert(val, "fa", "en");
+	     if(parseInt(val) !== NaN)
+		 set_cookie("limit", val);
 	 }
 	</script>
     </body>
