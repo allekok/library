@@ -113,10 +113,10 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	    $field_name = str_replace(["."," "], "_", $c["Field"]);
 	    if(in_array($c["Field"], DEF_COLS[$tbl]))
 		$main_html .= "<input type='text' name='{$field_name}' placeholder='" .
-			      SP($field_name) . "'>";
+			      SP($c["Field"]) . "'>";
 	    else
-		$not_main_html .= "<input type='text' name='{$field_name}' placeholder='".
-				  SP($field_name)."'>";
+		$not_main_html .= "<input type='text' name='{$field_name}' placeholder='" .
+				  SP($c["Field"]) . "'>";
 	}
 	echo "<div id='form-main'>{$main_html}</div>";
 	echo "<div id='form-not-main' style='display:none'>{$not_main_html}</div>";
@@ -169,7 +169,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 		 if(v != "")
 		 {
 		     request += `${k}=${v}&`;
-		     if(k != "table" || k != "limit")
+		     if(k != "table" && k != "limit")
 			 empty = false;
 		 }
 	     });
