@@ -20,6 +20,10 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 <!DOCTYPE html>
 <html <?php echo $html_attr; ?>>
     <head>
+	<script>
+	 if ('serviceWorker' in navigator)
+	     navigator.serviceWorker.register('./sw.js');
+	</script>
 	<title>
 	    <?php P("site title"); ?>
 	</title>
@@ -133,7 +137,8 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	?>
 	<div class="loading" id="main-loading" style="display:none"></div>
 	<div id="response"></div>
-	
+
+	<script defer src="script.js?v1"></script>
 	<script>
 	 const site_lang = "<?php echo $site_lang; ?>";
 	 const site_dir = site_lang == "en" ? "ltr" : "rtl";
@@ -141,19 +146,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	 const lang = "<?php echo $tbl; ?>";
 	 const dir = lang == "en" ? "ltr" : "rtl";
 	 const align = lang == "en" ? "left" : "right";
-	 function postUrl (url, request, callback)
-	 {
-	     const client = new XMLHttpRequest();
-	     client.open('post', url);
-	     client.onload = function ()
-	     {
-		 callback(this.responseText);
-	     }
-	     client.setRequestHeader(
-		 "Content-type","application/x-www-form-urlencoded");
-	     client.send(request);
-	 }
-	 
+
 	 function search (target_id="response")
 	 {
 	     const loadingDiv = document.getElementById("main-loading");
@@ -262,32 +255,20 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	     set_limit("limitTxt");
 	 });
 
-	 function set_cookie (cookie_name, value, days=1000, path="")
-	 {
-	     let expires = new Date();
-	     expires.setTime(expires.getTime() + (days*24*3600*1000));
-	     expires = expires.toUTCString();
-	     const cookie = `${cookie_name}=${value};expires=${expires};path=${path}`;
-	     document.cookie = cookie;
-	     return cookie;
-	 }
-
 	 const dark_icon = document.getElementById("dark-icon");
 	 dark_icon.addEventListener("click", function (e) {
 	     e.preventDefault();
-	     
 	     if(dark_icon.innerText == "brightness_2")
 	     {
 		 /* Light */
 		 set_cookie("theme", "dark");
-		 window.location.reload();
 	     }
 	     else
 	     {
 		 /* Dark */
 		 set_cookie("theme", "light");
-		 window.location.reload();
 	     }
+	     window.location.reload();
 	     dark_icon.innerText = "sync";
 	 });
 
@@ -295,72 +276,15 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	 const dd_lang_label = dd_lang.querySelector(".dd-label");
 	 const dd_lang_frame = dd_lang.querySelector(".dd-frame");
 	 dd_lang_label.addEventListener("click", function () {
-	     const dd_lang_label_icon = dd_lang_label.querySelector(".icon");
-	     if(dd_lang_frame.style.display != "block")
-	     {
-		 dd_lang_frame.style.display = "block";
-		 dd_lang_label_icon.innerText = "keyboard_arrow_up";
-	     }
-	     else
-	     {
-		 dd_lang_frame.style.display = "none";
-		 dd_lang_label_icon.innerText = "keyboard_arrow_down";
-	     }
+	     toggle(dd_lang_label, dd_lang_frame);
 	 });
-
-	 function set_lang (lang, e)
-	 {
-	     e.preventDefault();
-	     set_cookie("lang", lang);
-	     window.location.reload();
-	 }
 
 	 const dd_table = document.getElementById("dd-table");
 	 const dd_table_label = dd_table.querySelector(".dd-label");
 	 const dd_table_frame = dd_table.querySelector(".dd-frame");
 	 dd_table_label.addEventListener("click", function () {
-	     const dd_table_label_icon = dd_table_label.querySelector(".icon");
-	     if(dd_table_frame.style.display != "block")
-	     {
-		 dd_table_frame.style.display = "block";
-		 dd_table_label_icon.innerText = "keyboard_arrow_up";
-	     }
-	     else
-	     {
-		 dd_table_frame.style.display = "none";
-		 dd_table_label_icon.innerText = "keyboard_arrow_down";
-	     }
+	     toggle(dd_table_label, dd_table_frame);
 	 });
-
-	 function set_table (table, e)
-	 {
-	     e.preventDefault();
-	     set_cookie("table", table);
-	     window.location.reload();
-	 }
-
-	 function num_convert (inp="", f, t)
-	 {
-	     if(f == t) return inp;
-	     
-	     const nums = { en : ["0","1","2","3","4","5","6","7","8","9"],
-			    fa : ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"],
-			    ckb : ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'] };
-	     
-	     for (const i in nums[f])
-		 inp = inp.replace(new RegExp(nums[f][i],"g"), nums[t][i]);
-	     
-	     return inp;
-	 }
-
-	 function set_limit (el_id)
-	 {
-	     let val = document.getElementById(el_id).value;
-	     val = num_convert(val, "ckb", "en");
-	     val = num_convert(val, "fa", "en");
-	     if(parseInt(val) !== NaN)
-		 set_cookie("limit", val);
-	 }
 	</script>
     </body>
 </html>
