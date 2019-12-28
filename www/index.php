@@ -155,8 +155,8 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	     const loadingDiv = document.getElementById("main-loading");
 	     const form = document.getElementById("the-form");
 	     const target = document.getElementById(target_id);
-	     const main_fields = {fa : ["ردیف","عنوان‏","پديدآور"],
-				  en : ["id","Title‎","Author‎"]};
+	     const main_fields = {fa : ["عنوان‏","پديدآور","شماره راهنما (کنگره)‏"],
+				  en : ["Title‎","Author‎","LC No.‎"]};
 	     let request = "";
 	     let empty = true;
 	     form.querySelectorAll("input").forEach(function (o) {
