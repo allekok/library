@@ -228,11 +228,11 @@ header
 {
     margin-top:1.5em;
 }
-.row input[type=text]
-{
-    display:inline-block;
-}
 .row label
 {
-    display:inline-block;
+    display:block;
+}
+footer
+{
+    text-align:left;
 }

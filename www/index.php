@@ -32,7 +32,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 					   echo $dark ? 
 						"style-dark-comp.css" :
 						"style-comp.css";
-					   ?>" />
+					   ?>?v1" />
 	<meta name='viewport' content='width=device-width, initial-scale=1' />
 	<style>
 	 #response
@@ -137,6 +137,9 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	?>
 	<div class="loading" id="main-loading" style="display:none"></div>
 	<div id="response"></div>
+	<footer>
+	    <a href="/"><?php P("home"); ?></a>
+	</footer>
 
 	<script defer src="script.js?v1"></script>
 	<script>

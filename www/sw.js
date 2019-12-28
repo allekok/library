@@ -5,8 +5,8 @@ self.addEventListener('install', function(event) {
     event.waitUntil(
 	caches.open(cache_ver).then(function(cache) {
 	    return cache.addAll([
-		'style/style-comp.css',
-		'style/style-dark-comp.css',
+		'style/style-comp.css?v1',
+		'style/style-dark-comp.css?v1',
 		'style/DroidNaskh-Regular.woff2',
 		'style/Material-Icons.woff2',
 		'script.js?v1',

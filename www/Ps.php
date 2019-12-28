@@ -279,5 +279,10 @@ $Ps = [
 	"fa" => "",
 	"en" => "Contents",
     ],
+    "home" => [
+	"ckb" => "سەرچاوەکانی‌تر &rsaquo;",
+	"fa" => "سایر منابع &rsaquo;",
+	"en" => "&lsaquo; Other resources",
+    ],
 ];
 ?>
