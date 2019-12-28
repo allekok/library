@@ -199,12 +199,14 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 			     response[i][j] = response[i][j].replace(/\n/g,"<br>");
 			     if(j == "عنوان‏")
 			     {
-				 title = `<p style='font-weight:bold;text-align:center;padding:1em;margin-bottom:1em;border-bottom:2px solid'>${response[i][j]}</p>`;
+				 title = `<p style='font-weight:bold;text-align:center;padding:1em;margin-bottom:1em;border-bottom:1px solid'>${response[i][j]}</p>`;
 			     }
 			     else if(main_fields[lang].indexOf(j) !== -1)
-				 html_m += `${j}:<p style='padding-${align}:1em;margin-${align}:.5em;${j == "شماره راهنما (کنگره)‏" ? "direction:ltr;" : ""}'>${response[i][j]}</p>`;
+				 html_m += `${j}:<p style='padding-${align}:1em;margin-${align}:.5em;${j=="شماره راهنما (کنگره)‏" ? 
+"direction:ltr;" : ""}'>${response[i][j]}</p>`;
 			     else
-				 html_n_m += `${j}:<p style='padding-${align}:1.5em;margin-${align}:.5em'>${response[i][j]}</p>`;
+				 html_n_m += `${j}:<p style='padding-${align}:1.5em;margin-${align}:.5em;${j=="شماره راهنما (ديويي)‏" ? 
+"direction:ltr;" : ""}'>${response[i][j]}</p>`;
 			 }
 			 html_m += "</div>";
 			 html_n_m += "</div>";
