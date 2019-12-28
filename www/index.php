@@ -192,18 +192,23 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 			 html += `<li><div class='resp-num' style='${align=="right" ? "left" : "right"}:-1em'>${num_convert(String(parseInt(i)+1), "en", site_lang)}</div>`;
 			 let html_m = "<div class='li-main'>";
 			 let html_n_m = "<div class='li-not-main' style='display:none'>";
+			 let title = "";
 			 for(const j in response[i])
 			 {
 			     if(! response[i][j]) continue;
 			     response[i][j] = response[i][j].replace(/\n/g,"<br>");
-			     if(main_fields[lang].indexOf(j) !== -1)
-				 html_m += `${j}:<p style='padding-${align}:1em;margin-${align}:.5em;border-${align}:1px solid'>${response[i][j]}</p>`;
+			     if(j == "عنوان‏")
+			     {
+				 title = `<p style='font-weight:bold;text-align:center;padding:1em;margin-bottom:1em;border-bottom:2px solid'>${response[i][j]}</p>`;
+			     }
+			     else if(main_fields[lang].indexOf(j) !== -1)
+				 html_m += `${j}:<p style='padding-${align}:1em;margin-${align}:.5em;${j == "شماره راهنما (کنگره)‏" ? "direction:ltr;" : ""}'>${response[i][j]}</p>`;
 			     else
-				 html_n_m += `${j}:<p style='padding-${align}:1.5em;margin-${align}:.5em;border-${align}:1px solid'>${response[i][j]}</p>`;
+				 html_n_m += `${j}:<p style='padding-${align}:1.5em;margin-${align}:.5em'>${response[i][j]}</p>`;
 			 }
 			 html_m += "</div>";
 			 html_n_m += "</div>";
-			 html += html_m + html_n_m + `<button type='button' onclick='more(this)' class='more-btn' style='direction:${site_dir};text-align:${site_align == "right" ? "left" : "right"}'><?php P("more"); ?>...</button></li>`;
+			 html += title + html_m + html_n_m + `<button type='button' onclick='more(this)' class='more-btn' style='direction:${site_dir};text-align:${site_align == "right" ? "left" : "right"}'><?php P("more"); ?>...</button></li>`;
 		     }
 		     if(response.length == 0)
 		     {
