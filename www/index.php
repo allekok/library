@@ -141,7 +141,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	    <a href="/"><?php P("home"); ?></a>
 	</footer>
 
-	<script defer src="script.js?v1"></script>
+	<script defer src="script.js?v2"></script>
 	<script>
 	 const site_lang = "<?php echo $site_lang; ?>";
 	 const site_dir = site_lang == "en" ? "ltr" : "rtl";

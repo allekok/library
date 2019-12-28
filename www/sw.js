@@ -9,7 +9,7 @@ self.addEventListener('install', function(event) {
 		'style/style-dark-comp.css?v1',
 		'style/DroidNaskh-Regular.woff2',
 		'style/Material-Icons.woff2',
-		'script.js?v1',
+		'script.js?v2',
 	    ]);
 	}));
 });

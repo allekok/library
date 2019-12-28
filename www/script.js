@@ -11,7 +11,7 @@ function postUrl (url, request, callback)
     client.send(request);
 }
 
-function set_cookie (cookie_name, value, days=1000, path="")
+function set_cookie (cookie_name, value, days=1000, path="/")
 {
     let expires = new Date();
     expires.setTime(expires.getTime() + (days*24*3600*1000));
