@@ -65,6 +65,7 @@ foreach(XML_FILES as $L => $XML_FILE)
 		$V .= $S[0] . "\n";
 	    }
 	    $V = str_replace("[Book]", "", $V);
+	    $V = preg_replace("/Book](.+)]/uim", "$1", $V);
 	    $V = trim(addslashes($V));
 	    $INDEX = array_search(sanitize_string($FIELDS_NAMES[$II]), $COLUMNS);
 	    $C[$INDEX] = "'{$V}'";
