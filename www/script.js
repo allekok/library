@@ -11,6 +11,17 @@ function postUrl (url, request, callback)
     client.send(request);
 }
 
+function getUrl (url, callback)
+{
+    const client = new XMLHttpRequest();
+    client.open('get', url);
+    client.onload = function ()
+    {
+	callback(this.responseText);
+    }
+    client.send();
+}
+
 function set_cookie (cookie_name, value, days=1000, path="/")
 {
     let expires = new Date();

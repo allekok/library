@@ -236,3 +236,19 @@ footer
 {
     text-align:left;
 }
+.mapBtn
+{
+    margin-right:.5em;
+}
+#mapRes
+{
+    display:none;
+    background: #eee;
+    padding: .5em 1em;
+    border-radius: 1em;
+    margin: .5em 0;
+}
+#mapRes i
+{
+    font-style:normal;
+}

@@ -32,7 +32,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 					   echo $dark ? 
 						"style-dark-comp.css" :
 						"style-comp.css";
-					   ?>?v1" />
+					   ?>?v2" />
 	<meta name='viewport' content='width=device-width, initial-scale=1' />
 	<style>
 	 #response
@@ -141,7 +141,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	    <a href="/"><?php P("home"); ?></a>
 	</footer>
 
-	<script defer src="script.js?v2"></script>
+	<script defer src="script.js?v3"></script>
 	<script>
 	 const site_lang = "<?php echo $site_lang; ?>";
 	 const site_dir = site_lang == "en" ? "ltr" : "rtl";
@@ -149,7 +149,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	 const lang = "<?php echo $tbl; ?>";
 	 const dir = lang == "en" ? "ltr" : "rtl";
 	 const align = lang == "en" ? "left" : "right";
-
+	 
 	 function search (target_id="response")
 	 {
 	     const loadingDiv = document.getElementById("main-loading");
@@ -201,12 +201,18 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 			     {
 				 title = `<p style='font-weight:bold;text-align:center;padding:1em;margin-bottom:1em;border-bottom:1px solid'>${response[i][j]}</p>`;
 			     }
-			     else if(main_fields[lang].indexOf(j) !== -1)
+			     else if(main_fields[lang].indexOf(j) !== -1) {
 				 html_m += `${j}:<p style='padding-${align}:1em;margin-${align}:.5em;${j=="شماره راهنما (کنگره)‏" ? 
-"direction:ltr;" : ""}'>${response[i][j]}</p>`;
+"direction:ltr;" : ""}'>`;
+				 if(j == "شماره راهنما (کنگره)‏") {
+				     const loc = response[i][j].substr(0, response[i][j].indexOf("\u{200E}"));
+				     html_m += `<button type="button" onclick="map('${loc}', this)" class="mapBtn"><?php P("map"); ?></button><span id="mapRes"></span>`;
+				 }
+				 html_m += `${response[i][j]}</p>`;
+			     }
 			     else
 				 html_n_m += `${j}:<p style='padding-${align}:1.5em;margin-${align}:.5em;${j=="شماره راهنما (ديويي)‏" ? 
-"direction:ltr;" : ""}'>${response[i][j]}</p>`;
+				 "direction:ltr;" : ""}'>${response[i][j]}</p>`;
 			 }
 			 html_m += "</div>";
 			 html_n_m += "</div>";
@@ -281,7 +287,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	     window.location.reload();
 	     dark_icon.innerText = "sync";
 	 });
-
+	 
 	 const dd_lang = document.getElementById("dd-lang");
 	 const dd_lang_label = dd_lang.querySelector(".dd-label");
 	 const dd_lang_frame = dd_lang.querySelector(".dd-frame");
@@ -295,6 +301,14 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	 dd_table_label.addEventListener("click", function () {
 	     toggle(dd_table_label, dd_table_frame);
 	 });
+
+	 function map (label, el) {
+	     getUrl(`map.php?label=${label}&lang=${site_lang}`, function (resp) {
+		 const mapRes = el.parentNode.querySelector("#mapRes");
+		 mapRes.innerHTML = resp;
+		 mapRes.style.display = "block";
+	     });
+	 }
 	</script>
     </body>
 </html>
