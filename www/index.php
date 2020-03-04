@@ -206,7 +206,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 "direction:ltr;" : ""}'>`;
 				 if(j == "شماره راهنما (کنگره)‏") {
 				     const loc = response[i][j].substr(0, response[i][j].indexOf("\u{200E}"));
-				     html_m += `<button type="button" onclick="map('${loc}', this)" class="mapBtn"><?php P("map"); ?></button><span id="mapRes"></span>`;
+				     html_m += `<button type="button" onclick="map('${loc}', this)" class="mapBtn"><?php P("map"); ?></button><span id="mapRes" style="direction:${site_dir}"></span>`;
 				 }
 				 html_m += `${response[i][j]}</p>`;
 			     }

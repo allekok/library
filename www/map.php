@@ -16,13 +16,14 @@ $L = $map[$label];
 if(!$L) die();
 $html = "";
 foreach($L as $SET => $columns) {
-    $html .= SP("set") . ":" . num_convert($SET, "en", $site_lang) . "<br>\n";
+    $html .= "-&rsaquo; " . SP("set") . ":" . num_convert($SET, "en", $site_lang) . "<br>\n";
     foreach($columns as $COL => $_ROWS) {
-	$html .= "<i style='padding-{$align}:2em'>" .
-		 SP("col") . ": " . num_convert($COL, "en", $site_lang) . "</i><br>\n";
+	$html .= "<i style='padding-{$align}:2em'>-&rsaquo; " .
+		 SP("col") . ": " .
+		 num_convert($COL, "en", $site_lang) . "</i><br>\n";
 	$ROWS = num_convert(implode(", ", $_ROWS), "en", $site_lang);
-	$html .= "<i style='padding-{$align}:4em'>" .
-		 SP("row") . ": " . $ROWS . "</i><br>\n";
+	$html .= "<i class='icon' style='padding-{$align}:4em'
+>arrow_downward</i> <i>" . SP("row") . ": " . $ROWS . "</i><br>\n";
     }
 }
 echo $html;
