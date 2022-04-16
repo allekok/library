@@ -171,173 +171,240 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 		</footer>
 
 		<script defer src="script.js?v3"></script>
-		<script>
-		 const site_lang = "<?php echo $site_lang; ?>";
-		 const site_dir = site_lang == "en" ? "ltr" : "rtl";
-		 const site_align = site_lang == "en" ? "left" : "right";
-		 const lang = "<?php echo $tbl; ?>";
-		 const dir = lang == "en" ? "ltr" : "rtl";
-		 const align = lang == "en" ? "left" : "right";
-		 
-		 function search (target_id="response")
-		 {
-			 const loadingDiv = document.getElementById("main-loading");
-			 const form = document.getElementById("the-form");
-			 const target = document.getElementById(target_id);
-			 const main_fields = {fa : ["عنوان‏","پديدآور","شماره راهنما (کنگره)‏"],
-					      en : ["Title‎","Author‎","LC No.‎"]};
-			 let request = "";
-			 let empty = true;
-			 form.querySelectorAll("input").forEach(function (o) {
-				 const k = encodeURIComponent(o.name);
-				 const v = encodeURIComponent(o.value.trim());
-				 if(v != "")
-				 {
-					 request += `${k}=${v}&`;
-					 if(k != "table" && k != "limit")
-						 empty = false;
-				 }
-			 });
-			 if(empty)
-			 {
-				 target.innerHTML = `<p style='direction:${site_dir};text-align:${site_align}'><?php P("empty error"); ?></p>`;
-				 return;
-			 }
-			 loadingDiv.style.display = "block";
-			 postUrl("find.php", request, function (response) {
-				 try
-				 {
-					 response = JSON.parse(response);
-				 }
-				 catch (e)
-				 {
-					 response = false;
-				 }
-				 if(response)
-				 {
-					 let html = "<ul>";
-					 for(const i in response)
-					 {
-						 html += `<li><div class='resp-num' style='${align=="right" ? "left" : "right"}:-1em'>${num_convert(String(parseInt(i)+1), "en", site_lang)}</div>`;
-						 let html_m = "<div class='li-main'>";
-						 let html_n_m = "<div class='li-not-main' style='display:none'>";
-						 let title = "";
-						 for(const j in response[i])
-						 {
-							 if(! response[i][j]) continue;
-							 response[i][j] = response[i][j].replace(/\n/g,"<br>");
-							 if(j == "عنوان‏")
-							 {
-								 title = `<p style='font-weight:bold;text-align:center;padding:1em;margin-bottom:1em;border-bottom:1px solid'>${response[i][j]}</p>`;
-							 }
-							 else if(main_fields[lang].indexOf(j) !== -1) {
-								 html_m += `${j}:<p style='padding-${align}:1em;margin-${align}:.5em;${j=="شماره راهنما (کنگره)‏" ? 
-"direction:ltr;" : ""}'>`;
-								 if(j == "شماره راهنما (کنگره)‏") {
-									 const loc = response[i][j].substr(0, response[i][j].indexOf("\u{200E}"));
-									 html_m += `<button type="button" onclick="map('${loc}', this)" class="mapBtn"><?php P("map"); ?></button><span id="mapRes" style="direction:${site_dir}"></span>`;
-								 }
-								 html_m += `${response[i][j]}</p>`;
-							 }
-							 else
-								 html_n_m += `${j}:<p style='padding-${align}:1.5em;margin-${align}:.5em;${j=="شماره راهنما (ديويي)‏" ? 
-				 "direction:ltr;" : ""}'>${response[i][j]}</p>`;
-						 }
-						 html_m += "</div>";
-						 html_n_m += "</div>";
-						 html += title + html_m + html_n_m + `<button type='button' onclick='more(this)' class='more-btn' style='direction:${site_dir};text-align:${site_align == "right" ? "left" : "right"}'><?php P("more"); ?>...</button></li>`;
-					 }
-					 if(response.length == 0)
-					 {
-						 html += `<p style='direction:${site_dir};text-align:${site_align}'><?php P("not found"); ?></p>`;
-					 }
-					 html += "</ul>";
-					 target.innerHTML = html;
-					 loadingDiv.style.display = "none";
-				 }
-				 else
-				 {
-					 target.innerHTML = `<p style='direction:${site_dir};text-align:${site_align}'><?php P("not found"); ?></p>`;
-					 loadingDiv.style.display = "none";
-				 }
-			 });
-		 }
-
-		 const more_btn = document.getElementById("more-btn");
-		 more_btn.addEventListener("click", function () {
-			 const form_not_main = document.getElementById("form-not-main");
-			 if(form_not_main.style.display != "none")
-			 {
-				 form_not_main.style.display = "none";
-				 more_btn.innerText = "<?php P("more") ?>...";
-			 }
-			 else
-			 {
-				 form_not_main.style.display = "block";
-				 more_btn.innerHTML = "<i class='icon'>keyboard_arrow_up</i> <?php P("less") ?>";
-			 }
-		 });
-
-		 function more (btn)
-		 {
-			 const li_n_m = btn.parentNode.
-					    querySelector(".li-not-main");
-			 if(li_n_m.style.display == "none")
-			 {
-				 li_n_m.style.display = "block";
-				 btn.innerHTML = "<i class='icon'>keyboard_arrow_up</i> <?php P("less"); ?>";
-			 }
-			 else
-			 {
-				 li_n_m.style.display = "none";
-				 btn.innerText = "<?php P("more"); ?>...";
-			 }
-		 }
-		 
-		 document.getElementById("the-form").addEventListener("submit", function(e) {
-			 e.preventDefault();
-			 search();
-			 set_limit("limitTxt");
-		 });
-
-		 const dark_icon = document.getElementById("dark-icon");
-		 dark_icon.addEventListener("click", function (e) {
-			 e.preventDefault();
-			 if(dark_icon.innerText == "brightness_2")
-			 {
-				 /* Light */
-				 set_cookie("theme", "dark");
-			 }
-			 else
-			 {
-				 /* Dark */
-				 set_cookie("theme", "light");
-			 }
-			 window.location.reload();
-			 dark_icon.innerText = "sync";
-		 });
-		 
-		 const dd_lang = document.getElementById("dd-lang");
-		 const dd_lang_label = dd_lang.querySelector(".dd-label");
-		 const dd_lang_frame = dd_lang.querySelector(".dd-frame");
-		 dd_lang_label.addEventListener("click", function () {
-			 toggle(dd_lang_label, dd_lang_frame);
-		 });
-
-		 const dd_table = document.getElementById("dd-table");
-		 const dd_table_label = dd_table.querySelector(".dd-label");
-		 const dd_table_frame = dd_table.querySelector(".dd-frame");
-		 dd_table_label.addEventListener("click", function () {
-			 toggle(dd_table_label, dd_table_frame);
-		 });
-
-		 function map (label, el) {
-			 getUrl(`map.php?label=${label}&lang=${site_lang}`, function (resp) {
-				 const mapRes = el.parentNode.querySelector("#mapRes");
-				 mapRes.innerHTML = resp;
-				 mapRes.style.display = "block";
-			 });
-		 }
-		</script>
 	</body>
+	<script>
+	 /* Constants */
+	 const site_lang = '<?php echo $site_lang; ?>',
+	       site_dir = site_lang == 'en' ? 'ltr' : 'rtl',
+	       site_align = site_lang == 'en' ? 'left' : 'right',
+	       lang = '<?php echo $tbl; ?>',
+	       dir = lang == 'en' ? 'ltr' : 'rtl',
+	       align = lang == 'en' ? 'left' : 'right'
+	 
+	 const more_btn = document.getElementById('more-btn'),
+	       the_form = document.getElementById('the-form'),
+	       dark_icon = document.getElementById('dark-icon'),
+	       dd_lang = document.getElementById('dd-lang'),
+	       dd_lang_label = dd_lang.querySelector('.dd-label'),
+	       dd_lang_frame = dd_lang.querySelector('.dd-frame'),
+	       dd_table = document.getElementById('dd-table'),
+	       dd_table_label = dd_table.querySelector('.dd-label'),
+	       dd_table_frame = dd_table.querySelector('.dd-frame')
+
+	 /* Events */
+	 more_btn.addEventListener('click', () => {
+		 const form_not_main = document.getElementById('form-not-main')
+		 if(form_not_main.style.display != 'none') {
+			 form_not_main.style.display = 'none'
+			 more_btn.innerText = '<?php P("more") ?>...'
+		 }
+		 else {
+			 form_not_main.style.display = 'block'
+			 more_btn.innerHTML = '<i class="icon">' +
+					      'keyboard_arrow_up</i> ' +
+					      '<?php P("less") ?>'
+		 }
+	 })
+	 
+	 the_form.addEventListener('submit', e => {
+		 e.preventDefault()
+		 search()
+		 set_limit('limitTxt')
+	 })
+	 
+	 dark_icon.addEventListener('click', e => {
+		 e.preventDefault()
+		 
+		 if(dark_icon.innerText == 'brightness_2')
+			 set_cookie('theme', 'dark')
+		 else
+			 set_cookie('theme', 'light')
+		 
+		 window.location.reload()
+		 dark_icon.innerText = 'sync'
+	 })
+	 
+	 dd_lang_label.addEventListener('click', () => 
+		 toggle(dd_lang_label, dd_lang_frame))
+	 
+	 dd_table_label.addEventListener('click', () => 
+		 toggle(dd_table_label, dd_table_frame))
+	 
+	 /* Functions */
+	 function search(target_id='response') {
+		 const target = document.getElementById(target_id),
+		       form = document.getElementById('the-form'),
+		       loadingDiv = document.getElementById('main-loading')
+		 
+		 let request = '', empty = true
+		 
+		 form.querySelectorAll('input').forEach(o => {
+			 const k = encodeURIComponent(o.name),
+			       v = encodeURIComponent(o.value.trim())
+			 if(v) {
+				 request += `${k}=${v}&`
+				 if(k != 'table' && k != 'limit')
+					 empty = false
+			 }
+		 })
+		 
+		 if(empty) {
+			 target.innerHTML = `<p style='direction:` +
+					    `${site_dir};text-align:` +
+					    `${site_align}'>` +
+					    `<?php P("empty error"); ?>` +
+					    `</p>`;
+			 return
+		 }
+		 
+		 loadingDiv.style.display = 'block'
+		 
+		 postUrl('find.php', request, response => {
+			 try {
+				 response = JSON.parse(response)
+			 }
+			 catch(e) {
+				 response = false
+			 }
+
+			 if(!response) {
+				 target.innerHTML =
+					 `<p style='direction:${site_dir};` +
+					 `text-align:${site_align}'>` +
+					 `<?php P("not found"); ?></p>`;
+				 loadingDiv.style.display = 'none'
+				 return
+			 }
+			 
+			 target.innerHTML = htmlify(response)
+			 loadingDiv.style.display = 'none'
+		 })
+	 }
+	 
+	 function htmlify(response) {
+		 const main_fields = {
+			 fa: ['عنوان‏', 'پديدآور', 'شماره راهنما (کنگره)‏'],
+			 en: ['Title‎', 'Author‎', 'LC No.‎']
+		 }
+		 
+		 let html = '<ul>'
+		 
+		 for(const i in response) {
+			 html += `<li><div class='resp-num' ` +
+				 `style='` +
+				 `${align == 'right' ? 'left' : 'right'}` +
+				 `:-1em'>` +
+				 num_convert(String(+i + 1), 'en', site_lang) +
+				 `</div>`;
+			 
+			 let htm_m = '<div class="li-main">',
+			     htm_n_m = '<div class="li-not-main"' +
+				       ' style="display:none">',
+			     title = ''
+			 
+			 for(const j in response[i]) {
+				 if(!response[i][j])
+					 continue
+				 
+				 response[i][j] = response[i][j].replace(
+					 /\n/g, '<br>')
+				 
+				 if(j == 'عنوان‏') {
+					 title = `<p style='font-` +
+						 `weight:bold;text` +
+						 `-align:center;` +
+						 `padding:1em;` +
+						 `margin-bottom:1em` +
+						 `;border-bottom:1px` +
+						 `solid'>` +
+						 response[i][j] +
+						 `</p>`;
+				 }
+				 else if(main_fields[lang].indexOf(j) !== -1) {
+					 const _dir = j == 'شماره راهنما (کنگره)‏' ?
+						      'direction:ltr;' :
+						      '';
+					 htm_m += `${j}:<p style='` +
+						  `padding-${align}` +
+						  `:1em;margin-` +
+						  `${align}:.5em;` +
+						  `${_dir}'>`;
+					 
+					 if(j == 'شماره راهنما (کنگره)‏') {
+						 const loc = get_loc(
+							 response[i][j])
+						 htm_m += `<button type="` +
+							  `button" onclick` +
+							  `="map('${loc}', ` +
+							  `this)" class="` +
+							  `mapBtn">` +
+							  `<?php P("map") ?>` +
+							  `</button><span ` +
+							  `id="mapRes" style` +
+							  `="direction:` +
+							  `${site_dir}">` +
+							  `</span>`;
+					 }
+					 
+					 htm_m += `${response[i][j]}</p>`;
+				 }
+				 else {
+					 const _dir = j == 'شماره راهنما (ديويي)‏' ?
+						      'direction:ltr;' :
+						      '';
+					 htm_n_m += `${j}:<p style='padding` +
+						    `-${align}:1.5em;margin` +
+						    `-${align}:.5em;${_dir}` +
+						    `'>${response[i][j]}</p>`;
+				 }
+			 }
+			 
+			 const _dir = site_align == 'right' ? 'left' : 'right'
+			 htm_m += '</div>'
+			 htm_n_m += '</div>'
+			 html += title +
+				 htm_m +
+				 htm_n_m +
+				 `<button type='button' onclick='more(this)'` +
+				 `class='more-btn' style='direction:` +
+				 `${site_dir};text-align:${_dir}'>` +
+				 `<?php P("more"); ?>...</button></li>`;
+		 }
+		 
+		 if(!response.length) {
+			 html += `<p style='direction:${site_dir};` +
+				 `text-align:${site_align}'>` +
+				 `<?php P("not found"); ?></p>`;
+		 }
+		 
+		 html += '</ul>'
+		 return html
+	 }
+
+	 function get_loc(res) {
+		 return res.substr(0, res.indexOf('\u{200E}'))
+	 }
+
+	 function more(btn) {
+		 const li_n_m = btn.parentNode.querySelector('.li-not-main')
+		 if(li_n_m.style.display == 'none') {
+			 li_n_m.style.display = 'block'
+			 btn.innerHTML = '<i class="icon">' +
+					 'keyboard_arrow_up</i> ' +
+					 '<?php P("less"); ?>'
+		 }
+		 else {
+			 li_n_m.style.display = 'none'
+			 btn.innerText = '<?php P("more"); ?>...'
+		 }
+	 }
+
+	 function map(label, el) {
+		 getUrl(`map.php?label=${label}&lang=${site_lang}`, resp => {
+			 const mapRes = el.parentNode.querySelector('#mapRes')
+			 mapRes.innerHTML = resp
+			 mapRes.style.display = 'block'
+		 })
+	 }
+	</script>
 </html>
