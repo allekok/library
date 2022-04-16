@@ -12,28 +12,28 @@ $RECORDS = extract_tags($TOKENS, "<Record", "</Record>");
 
 foreach($RECORDS as $I => $R)
 {
-    $FIELDS_NAMES = tag_names($R, "<Field");
-    $FIELDS = extract_tags($R, "<Field", "</Field>");
-    
-    $O = fopen("out/{$LANG}/{$I}", "w");
+	$FIELDS_NAMES = tag_names($R, "<Field");
+	$FIELDS = extract_tags($R, "<Field", "</Field>");
 
-    foreach($FIELDS as $II => $F)
-    {
-	$SUBFIELDS_NAMES = tag_names($F, "<SubField");
-	$SUBFIELDS = extract_tags($F, "<SubField", "</SubField>");
+	$O = fopen("out/{$LANG}/{$I}", "w");
 
-	$F_NAME = sanitize_string($FIELDS_NAMES[$II]);
-	fwrite($O, "{$F_NAME}:\n");
-	
-	foreach($SUBFIELDS as $III => $S)
+	foreach($FIELDS as $II => $F)
 	{
-	    $S_NAME = sanitize_string($SUBFIELDS_NAMES[$III]);
-	    $S_0 = sanitize_string($S[0]);
-	    fwrite($O, "\t{$S_NAME}: {$S_0}\n");
+		$SUBFIELDS_NAMES = tag_names($F, "<SubField");
+		$SUBFIELDS = extract_tags($F, "<SubField", "</SubField>");
+
+		$F_NAME = sanitize_string($FIELDS_NAMES[$II]);
+		fwrite($O, "{$F_NAME}:\n");
+
+		foreach($SUBFIELDS as $III => $S)
+		{
+			$S_NAME = sanitize_string($SUBFIELDS_NAMES[$III]);
+			$S_0 = sanitize_string($S[0]);
+			fwrite($O, "\t{$S_NAME}: {$S_0}\n");
+		}
 	}
-    }
-    
-    echo "-> out/{$LANG}/{$I}\n";
-    fclose($O);
+
+	echo "-> out/{$LANG}/{$I}\n";
+	fclose($O);
 }
 ?>

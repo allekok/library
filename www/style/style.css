@@ -1,29 +1,25 @@
-@font-face
-{
-    font-family:'Naskh';
+@font-face {
+    font-family:"Naskh";
     font-display:swap;
     src: url("DroidNaskh-Regular.woff2") format("woff2");
 }
-@font-face
-{
-    font-family:'Icon';
+@font-face {
+    font-family:"Icon";
     font-display:swap;
     src: url("Material-Icons.woff2") format("woff2");
 }
-body
-{
+body {
     background:#fff;
     color:#000;
     max-width:1000px;
     margin:0 auto;
     padding:1em;
-    font-family:'Naskh';
+    font-family:"Naskh";
 }
-input[type=text]
-{
+input[type=text] {
     -webkit-appearance:none;
     appearance:none;
-    font-family:'Naskh';
+    font-family:"Naskh";
     font-size:inherit;
     outline:0;
     border:1px solid;
@@ -37,16 +33,14 @@ input[type=text]
     background:#fff;
     color:#000;
 }
-input[type=text]:focus
-{
+input[type=text]:focus {
     border-color:#00e;
     outline:0;
 }
-button
-{
+button {
     -webkit-appearance:none;
     appearance:none;
-    font-family:'Naskh';
+    font-family:"Naskh";
     font-size:inherit;
     background:#000;
     color:#fff;
@@ -55,49 +49,39 @@ button
     box-shadow:none;
     border-radius:1em;
 }
-button:hover
-{
+button:hover {
     background:#00e;
 }
-button[type=submit]
-{
+button[type=submit] {
     display:block;
     margin:2em auto;
     padding:.5em 1em;
 }
-header h1
-{
+header h1 {
     text-align:center;
 }
-@media only screen and (max-width:600px)
-{
-    body
-    {
+@media only screen and (max-width:600px) {
+    body {
 	font-size:14px;
     }
 }
-::placeholder
-{
+::placeholder {
     color:#666;
 }
-.more-btn
-{
+.more-btn {
     display:block;
     width:100%;
     background:none;
     color:#000;
 }
-.more-btn:hover
-{
+.more-btn:hover {
     background:none;
     color:#00e;
 }
-#more-btn
-{
+#more-btn {
     width:auto;
 }
-@keyframes loading
-{
+@keyframes loading {
     0%
     {
 	background:#fff;
@@ -111,20 +95,17 @@ header h1
 	background:#fff;
     }
 }
-.loading
-{
+.loading {
     animation:loading 1s linear infinite;
     width:2em;
     height:2em;
     margin:auto;
     border-radius:50%;
 }
-#response ul
-{
+#response ul {
     padding:0;
 }
-#response li
-{
+#response li {
     display:block;
     margin:.5em .5em 1em .5em;
     padding:.5em;
@@ -132,47 +113,38 @@ header h1
     border-radius:.3em;
     position:relative;
 }
-.icon
-{
-    font-family:'Icon';
+.icon {
+    font-family:"Icon";
     font-style:normal;
     vertical-align:middle;
 }
-a
-{
+a {
     text-decoration:none;
     color:#000;
 }
-a:hover
-{
+a:hover {
     color:#00e;
 }
-#dark-icon
-{
+#dark-icon {
     font-size:2em;
     position:absolute;
     left:0;
     top:.3em;
 }
-header
-{
+header {
     position:relative;
 }
-.dropdown
-{
+.dropdown {
     position:relative;
 }
-.dd-label
-{
+.dd-label {
     cursor:pointer;
     display:inline-block;
 }
-.dd-label:hover
-{
+.dd-label:hover {
     color:#00e;
 }
-.dd-frame
-{
+.dd-frame {
     background:#fff;
     color:#666;
     display:none;
@@ -181,33 +153,27 @@ header
     z-index:999;
     position:absolute;
 }
-.dd-frame ul
-{
+.dd-frame ul {
     margin:0;
     padding:0;
 }
-.dd-frame ul li
-{
+.dd-frame ul li {
     display:block;
     padding:.5em;
     font-size:.9em;
 }
-#dd-lang
-{
+#dd-lang {
     position:absolute;
     right:0;
     top:.3em;
 }
-#dd-lang .dd-frame
-{
+#dd-lang .dd-frame {
     min-width:90px;
 }
-#response p
-{
+#response p {
     margin:0;
 }
-.resp-num
-{
+.resp-num {
     position:absolute;
     top:-.5em;
     border-radius:50%;
@@ -216,39 +182,31 @@ header
     border:1px solid;
     font-size:1.1em;
 }
-#dd-table
-{
+#dd-table {
     display:inline-block;
 }
-#dd-table .dd-frame
-{
+#dd-table .dd-frame {
     min-width:150px;
 }
-.row
-{
+.row {
     margin-top:1.5em;
 }
-.row label
-{
+.row label {
     display:block;
 }
-footer
-{
+footer {
     text-align:left;
 }
-.mapBtn
-{
+.mapBtn {
     margin-right:.5em;
 }
-#mapRes
-{
+#mapRes {
     display:none;
     background: #eee;
     padding: .5em 1em;
     border-radius: 1em;
     margin: .5em 0;
 }
-#mapRes i
-{
+#mapRes i {
     font-style:normal;
 }
