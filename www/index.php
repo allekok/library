@@ -25,11 +25,11 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 		</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width">
-		<link rel="stylesheet" href="style/<?php 
-						   echo $dark ? 
+		<link rel="stylesheet" href="style/<?php
+						   echo $dark ?
 							"style-dark-comp.css" :
 							"style-comp.css";
-						   ?>?v2">
+						   ?>?v4">
 		<style>
 		 #response {
 			 direction:<?php echo $tbl == "en" ? "ltr" : "rtl"; ?>
@@ -80,7 +80,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 		/* List fields */
 		if(!in_array($tbl, SQL_TABLES))
 			$tbl = SQL_TABLE_DEF;
-		
+
 		$sql = mysqli_connect(SQL_HOST,
 				      SQL_USER,
 				      SQL_PASS,
@@ -89,12 +89,12 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 		$result = mysqli_query($sql, $query);
 		if(!$result)
 			die();
-		
+
 		$main_html = "";
 		$not_main_html = "";
 		echo "<form action='find.php' method='post' id='the-form'>";
 		?>
-		<?php P("search in"); ?>: 
+		<?php P("search in"); ?>:
 		<div class="dropdown" id="dd-table">
 			<div class="dd-label">
 				<?php
@@ -106,7 +106,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 					keyboard_arrow_down
 				</span>
 			</div>
-			
+
 			<?php
 			echo "<div class='dd-frame'><ul>";
 			foreach(SQL_TABLES as $i => $L) {
@@ -129,7 +129,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 			$field_name = str_replace([".", " "],
 						  "_",
 						  $c["Field"]);
-			
+
 			if(in_array($c["Field"], DEF_COLS[$tbl])) {
 				$main_html .= "<input type='text' " .
 					      "name='{$field_name}' " .
@@ -160,7 +160,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 		     "'></div>";
 		echo "<button type='submit'>" . SP("send") . "</button>";
 		echo "</form>";
-		
+
 		mysqli_close($sql);
 		?>
 		<div class="loading" id="main-loading" style="display:none">
@@ -170,7 +170,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 			<a href="/"><?php P("home"); ?></a>
 		</footer>
 
-		<script defer src="script.js?v3"></script>
+		<script defer src="script.js?v4"></script>
 	</body>
 	<script>
 	 /* Constants */
@@ -180,7 +180,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 	       lang = '<?php echo $tbl; ?>',
 	       dir = lang == 'en' ? 'ltr' : 'rtl',
 	       align = lang == 'en' ? 'left' : 'right'
-	 
+
 	 const more_btn = document.getElementById('more-btn'),
 	       the_form = document.getElementById('the-form'),
 	       dark_icon = document.getElementById('dark-icon'),
@@ -205,39 +205,39 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 					      '<?php P("less") ?>'
 		 }
 	 })
-	 
+
 	 the_form.addEventListener('submit', e => {
 		 e.preventDefault()
 		 search()
 		 set_limit('limitTxt')
 	 })
-	 
+
 	 dark_icon.addEventListener('click', e => {
 		 e.preventDefault()
-		 
+
 		 if(dark_icon.innerText == 'brightness_2')
 			 set_cookie('theme', 'dark')
 		 else
 			 set_cookie('theme', 'light')
-		 
+
 		 window.location.reload()
 		 dark_icon.innerText = 'sync'
 	 })
-	 
-	 dd_lang_label.addEventListener('click', () => 
+
+	 dd_lang_label.addEventListener('click', () =>
 		 toggle(dd_lang_label, dd_lang_frame))
-	 
-	 dd_table_label.addEventListener('click', () => 
+
+	 dd_table_label.addEventListener('click', () =>
 		 toggle(dd_table_label, dd_table_frame))
-	 
+
 	 /* Functions */
 	 function search(target_id='response') {
 		 const target = document.getElementById(target_id),
 		       form = document.getElementById('the-form'),
 		       loadingDiv = document.getElementById('main-loading')
-		 
+
 		 let request = '', empty = true
-		 
+
 		 form.querySelectorAll('input').forEach(o => {
 			 const k = encodeURIComponent(o.name),
 			       v = encodeURIComponent(o.value.trim())
@@ -247,7 +247,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 					 empty = false
 			 }
 		 })
-		 
+
 		 if(empty) {
 			 target.innerHTML = `<p style='direction:` +
 					    `${site_dir};text-align:` +
@@ -256,9 +256,9 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 					    `</p>`;
 			 return
 		 }
-		 
+
 		 loadingDiv.style.display = 'block'
-		 
+
 		 postUrl('find.php', request, response => {
 			 try {
 				 response = JSON.parse(response)
@@ -275,20 +275,20 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 				 loadingDiv.style.display = 'none'
 				 return
 			 }
-			 
+
 			 target.innerHTML = htmlify(response)
 			 loadingDiv.style.display = 'none'
 		 })
 	 }
-	 
+
 	 function htmlify(response) {
 		 const main_fields = {
 			 fa: ['عنوان‏', 'پديدآور', 'شماره راهنما (کنگره)‏'],
 			 en: ['Title‎', 'Author‎', 'LC No.‎']
 		 }
-		 
+
 		 let html = '<ul>'
-		 
+
 		 for(const i in response) {
 			 html += `<li><div class='resp-num' ` +
 				 `style='` +
@@ -296,19 +296,19 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 				 `:-1em'>` +
 				 num_convert(String(+i + 1), 'en', site_lang) +
 				 `</div>`;
-			 
+
 			 let htm_m = '<div class="li-main">',
 			     htm_n_m = '<div class="li-not-main"' +
 				       ' style="display:none">',
 			     title = ''
-			 
+
 			 for(const j in response[i]) {
 				 if(!response[i][j])
 					 continue
-				 
+
 				 response[i][j] = response[i][j].replace(
 					 /\n/g, '<br>')
-				 
+
 				 if(j == 'عنوان‏') {
 					 title = `<p style='font-` +
 						 `weight:bold;text` +
@@ -329,7 +329,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 						  `:1em;margin-` +
 						  `${align}:.5em;` +
 						  `${_dir}'>`;
-					 
+
 					 if(j == 'شماره راهنما (کنگره)‏') {
 						 const loc = get_loc(
 							 response[i][j])
@@ -345,7 +345,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 							  `${site_dir}">` +
 							  `</span>`;
 					 }
-					 
+
 					 htm_m += `${response[i][j]}</p>`;
 				 }
 				 else {
@@ -358,7 +358,7 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 						    `'>${response[i][j]}</p>`;
 				 }
 			 }
-			 
+
 			 const _dir = site_align == 'right' ? 'left' : 'right'
 			 htm_m += '</div>'
 			 htm_n_m += '</div>'
@@ -370,13 +370,13 @@ $html_attr = "dir='{$html_dir}' lang='{$html_lang}'";
 				 `${site_dir};text-align:${_dir}'>` +
 				 `<?php P("more"); ?>...</button></li>`;
 		 }
-		 
+
 		 if(!response.length) {
 			 html += `<p style='direction:${site_dir};` +
 				 `text-align:${site_align}'>` +
 				 `<?php P("not found"); ?></p>`;
 		 }
-		 
+
 		 html += '</ul>'
 		 return html
 	 }
